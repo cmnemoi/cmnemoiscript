@@ -6,14 +6,11 @@ fn tokenize(source_code: &str) -> Vec<Token> {
 }
 
 fn get_token_from(character: &str) -> Token {
-    if character.parse::<f64>().is_ok() {
-        Token {kind: TokenType::Number, value: character.to_string()} 
-    } else if character == "=" {
-        return Token {kind: TokenType::Equals, value: character.to_string()}
-    } else if character.is_ascii() {
-        return Token {kind: TokenType::Variable, value: character.to_string()}
-    } else {
-        panic!("Syntax error : invalid token {character}")
+    match character {
+        _ if character.parse::<f64>().is_ok() => Token {kind: TokenType::Number, value: character.to_string()},
+        "=" => Token {kind: TokenType::Equals, value: character.to_string()},
+        _ if character.is_ascii() => Token {kind: TokenType::Variable, value: character.to_string()},
+        _ => panic!("Syntax error: invalid token {}", character),
     }
 }
 

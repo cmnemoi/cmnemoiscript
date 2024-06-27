@@ -23,9 +23,13 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-    - name: Build
+    - name: Build with cargo
       run: cargo build --verbose
-    - name: Lint
+    - name: Lint with clippy
       run: cargo clippy --all-targets --all-features
-    - name: Run tests
+    - name: Run tests with cargo
       run: cargo test --verbose
+    - name: Upload coverage reports to Codecov
+      uses: codecov/codecov-action@v4.0.1
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}

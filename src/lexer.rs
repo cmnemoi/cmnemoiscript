@@ -39,9 +39,9 @@ fn tokenize(source_code: &str) -> Vec<Token> {
                     value: number,
                 });
             }
-            character if is_letter(character) => {
+            character if is_alphanumeric(character) => {
                 let mut variable = "".to_string();
-                while !source_code.is_empty() && is_letter(source_code[0]) {
+                while !source_code.is_empty() && is_alphanumeric(source_code[0]) {
                     variable = format!("{}{}", variable, source_code.remove(0));
                 }
 
@@ -64,8 +64,8 @@ fn is_single_character_binary_operation_token(character: &str) -> bool {
     character == "+" || character == "-" || character == "*" || character == "/" || character == "%"
 }
 
-fn is_letter(character: &str) -> bool {
-    Regex::new(r"^[a-zA-Z]$").unwrap().is_match(character)
+fn is_alphanumeric(character: &str) -> bool {
+    Regex::new(r"^[a-zA-Z0-9]+$").unwrap().is_match(character)
 }
 
 fn is_integer(character: &str) -> bool {
@@ -372,6 +372,27 @@ mod tests {
             },
         ];
         let actual_tokens = tokenize("x-y=42");
+
+        assert_eq!(actual_tokens, expected_tokens)
+    }
+
+    #[test]
+    fn should_tokenize_price1_equals_42() {
+        let expected_tokens = vec![
+            Token {
+                kind: TokenType::Variable,
+                value: "price1".to_string(),
+            },
+            Token {
+                kind: TokenType::Equals,
+                value: "=".to_string(),
+            },
+            Token {
+                kind: TokenType::Number,
+                value: "42".to_string(),
+            },
+        ];
+        let actual_tokens = tokenize("price1 = 42");
 
         assert_eq!(actual_tokens, expected_tokens)
     }

@@ -7,9 +7,18 @@ fn tokenize(source_code: &str) -> Vec<Token> {
 
 fn get_token_from(character: &str) -> Token {
     match character {
-        _ if character.parse::<f64>().is_ok() => Token {kind: TokenType::Number, value: character.to_string()},
-        "=" => Token {kind: TokenType::Equals, value: character.to_string()},
-        _ if character.is_ascii() => Token {kind: TokenType::Variable, value: character.to_string()},
+        _ if character.parse::<f64>().is_ok() => Token {
+            kind: TokenType::Number,
+            value: character.to_string(),
+        },
+        "=" => Token {
+            kind: TokenType::Equals,
+            value: character.to_string(),
+        },
+        _ if character.is_ascii() => Token {
+            kind: TokenType::Variable,
+            value: character.to_string(),
+        },
         _ => panic!("Syntax error: invalid token {}", character),
     }
 }
@@ -33,9 +42,18 @@ mod tests {
     #[test]
     fn should_tokenize_x_equals_42() {
         let expected_tokens = vec![
-            Token {kind: TokenType::Variable, value: "x".to_string()},
-            Token {kind: TokenType::Equals, value: "=".to_string()},
-            Token {kind: TokenType::Number, value: "42".to_string()},
+            Token {
+                kind: TokenType::Variable,
+                value: "x".to_string(),
+            },
+            Token {
+                kind: TokenType::Equals,
+                value: "=".to_string(),
+            },
+            Token {
+                kind: TokenType::Number,
+                value: "42".to_string(),
+            },
         ];
         let actual_tokens = tokenize("x = 42");
 
@@ -45,9 +63,18 @@ mod tests {
     #[test]
     fn should_tokenize_x_equals_43() {
         let expected_tokens = vec![
-            Token {kind: TokenType::Variable, value: "x".to_string()},
-            Token {kind: TokenType::Equals, value: "=".to_string()},
-            Token {kind: TokenType::Number, value: "43".to_string()},
+            Token {
+                kind: TokenType::Variable,
+                value: "x".to_string(),
+            },
+            Token {
+                kind: TokenType::Equals,
+                value: "=".to_string(),
+            },
+            Token {
+                kind: TokenType::Number,
+                value: "43".to_string(),
+            },
         ];
         let actual_tokens = tokenize("x = 43");
 
@@ -57,9 +84,18 @@ mod tests {
     #[test]
     fn should_tokenize_y_equals_42() {
         let expected_tokens = vec![
-            Token {kind: TokenType::Variable, value: "y".to_string()},
-            Token {kind: TokenType::Equals, value: "=".to_string()},
-            Token {kind: TokenType::Number, value: "42".to_string()},
+            Token {
+                kind: TokenType::Variable,
+                value: "y".to_string(),
+            },
+            Token {
+                kind: TokenType::Equals,
+                value: "=".to_string(),
+            },
+            Token {
+                kind: TokenType::Number,
+                value: "42".to_string(),
+            },
         ];
         let actual_tokens = tokenize("y = 42");
 
@@ -69,9 +105,18 @@ mod tests {
     #[test]
     fn should_tokenize_xy_equals_42() {
         let expected_tokens = vec![
-            Token {kind: TokenType::Variable, value: "xy".to_string()},
-            Token {kind: TokenType::Equals, value: "=".to_string()},
-            Token {kind: TokenType::Number, value: "42".to_string()},
+            Token {
+                kind: TokenType::Variable,
+                value: "xy".to_string(),
+            },
+            Token {
+                kind: TokenType::Equals,
+                value: "=".to_string(),
+            },
+            Token {
+                kind: TokenType::Number,
+                value: "42".to_string(),
+            },
         ];
         let actual_tokens = tokenize("xy = 42");
 

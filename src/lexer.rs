@@ -7,12 +7,16 @@ fn tokenize(source_code: &str) -> Vec<Token> {
 
 fn get_token_from(character: &str) -> Token {
     match character {
-        _ if character.parse::<f64>().is_ok() => Token {
-            kind: TokenType::Number,
-            value: character.to_string(),
-        },
         "=" => Token {
             kind: TokenType::Equals,
+            value: character.to_string(),
+        },
+        _ if is_binary_operation_token(character) => Token {
+            kind: TokenType::BinaryOperation,
+            value: character.to_string(),
+        },
+        _ if character.parse::<f64>().is_ok() => Token {
+            kind: TokenType::Number,
             value: character.to_string(),
         },
         _ if character.is_ascii() => Token {
@@ -23,11 +27,21 @@ fn get_token_from(character: &str) -> Token {
     }
 }
 
+fn is_binary_operation_token(character: &str) -> bool {
+    character == "+"
+        || character == "-"
+        || character == "*"
+        || character == "/"
+        || character == "%"
+        || character == "**"
+}
+
 #[derive(Debug, PartialEq)]
 enum TokenType {
-    Variable,
+    BinaryOperation,
     Equals,
     Number,
+    Variable,
 }
 
 #[derive(Debug, PartialEq)]
@@ -119,6 +133,180 @@ mod tests {
             },
         ];
         let actual_tokens = tokenize("xy = 42");
+
+        assert_eq!(actual_tokens, expected_tokens)
+    }
+
+    #[test]
+    fn should_tokenize_x_plus_y_equals_42() {
+        let expected_tokens = vec![
+            Token {
+                kind: TokenType::Variable,
+                value: "x".to_string(),
+            },
+            Token {
+                kind: TokenType::BinaryOperation,
+                value: "+".to_string(),
+            },
+            Token {
+                kind: TokenType::Variable,
+                value: "y".to_string(),
+            },
+            Token {
+                kind: TokenType::Equals,
+                value: "=".to_string(),
+            },
+            Token {
+                kind: TokenType::Number,
+                value: "42".to_string(),
+            },
+        ];
+        let actual_tokens = tokenize("x + y = 42");
+
+        assert_eq!(actual_tokens, expected_tokens)
+    }
+
+    #[test]
+    fn should_tokenize_x_minus_y_equals_42() {
+        let expected_tokens = vec![
+            Token {
+                kind: TokenType::Variable,
+                value: "x".to_string(),
+            },
+            Token {
+                kind: TokenType::BinaryOperation,
+                value: "-".to_string(),
+            },
+            Token {
+                kind: TokenType::Variable,
+                value: "y".to_string(),
+            },
+            Token {
+                kind: TokenType::Equals,
+                value: "=".to_string(),
+            },
+            Token {
+                kind: TokenType::Number,
+                value: "42".to_string(),
+            },
+        ];
+        let actual_tokens = tokenize("x - y = 42");
+
+        assert_eq!(actual_tokens, expected_tokens)
+    }
+
+    #[test]
+    fn should_tokenize_x_times_y_equals_42() {
+        let expected_tokens = vec![
+            Token {
+                kind: TokenType::Variable,
+                value: "x".to_string(),
+            },
+            Token {
+                kind: TokenType::BinaryOperation,
+                value: "*".to_string(),
+            },
+            Token {
+                kind: TokenType::Variable,
+                value: "y".to_string(),
+            },
+            Token {
+                kind: TokenType::Equals,
+                value: "=".to_string(),
+            },
+            Token {
+                kind: TokenType::Number,
+                value: "42".to_string(),
+            },
+        ];
+        let actual_tokens = tokenize("x * y = 42");
+
+        assert_eq!(actual_tokens, expected_tokens)
+    }
+
+    #[test]
+    fn should_tokenize_x_divided_by_y_equals_42() {
+        let expected_tokens = vec![
+            Token {
+                kind: TokenType::Variable,
+                value: "x".to_string(),
+            },
+            Token {
+                kind: TokenType::BinaryOperation,
+                value: "/".to_string(),
+            },
+            Token {
+                kind: TokenType::Variable,
+                value: "y".to_string(),
+            },
+            Token {
+                kind: TokenType::Equals,
+                value: "=".to_string(),
+            },
+            Token {
+                kind: TokenType::Number,
+                value: "42".to_string(),
+            },
+        ];
+        let actual_tokens = tokenize("x / y = 42");
+
+        assert_eq!(actual_tokens, expected_tokens)
+    }
+
+    #[test]
+    fn should_tokenize_x_modulo_y_equals_42() {
+        let expected_tokens = vec![
+            Token {
+                kind: TokenType::Variable,
+                value: "x".to_string(),
+            },
+            Token {
+                kind: TokenType::BinaryOperation,
+                value: "%".to_string(),
+            },
+            Token {
+                kind: TokenType::Variable,
+                value: "y".to_string(),
+            },
+            Token {
+                kind: TokenType::Equals,
+                value: "=".to_string(),
+            },
+            Token {
+                kind: TokenType::Number,
+                value: "42".to_string(),
+            },
+        ];
+        let actual_tokens = tokenize("x % y = 42");
+
+        assert_eq!(actual_tokens, expected_tokens)
+    }
+
+    #[test]
+    fn should_tokenize_x_power_y_equals_42() {
+        let expected_tokens = vec![
+            Token {
+                kind: TokenType::Variable,
+                value: "x".to_string(),
+            },
+            Token {
+                kind: TokenType::BinaryOperation,
+                value: "**".to_string(),
+            },
+            Token {
+                kind: TokenType::Variable,
+                value: "y".to_string(),
+            },
+            Token {
+                kind: TokenType::Equals,
+                value: "=".to_string(),
+            },
+            Token {
+                kind: TokenType::Number,
+                value: "42".to_string(),
+            },
+        ];
+        let actual_tokens = tokenize("x ** y = 42");
 
         assert_eq!(actual_tokens, expected_tokens)
     }

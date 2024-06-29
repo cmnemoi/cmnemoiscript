@@ -85,6 +85,7 @@ struct Token {
     kind: TokenType,
     value: String,
 }
+
 #[cfg(test)]
 mod tests {
     use crate::lexer::{tokenize, Token, TokenType};

@@ -1,5 +1,11 @@
 mod lexer;
 
-fn main() {
-    println!("Hello, world!");
+fn main() {}
+
+#[cfg(test)]
+mod tests {
+    #[test]
+    fn test_main() {
+        crate::main();
+    }
 }
